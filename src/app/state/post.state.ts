@@ -1,20 +1,18 @@
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import { Injectable } from '@angular/core';
-import { GetPosts, GetPost, AddPost, UpdatePost, DeletePost } from './post.action';
+import { GetPosts, AddPost, UpdatePost, DeletePost } from './post.action';
 import { PostService } from '../services/post.service';
 import { tap } from 'rxjs/operators';
 import { Post } from '../models/post.model';
 
 export class PostStateModel {
   posts: Post[] = [];
-  selectedPost: Post | null = null;
 }
 
 @State<PostStateModel>({
   name: 'posts',
   defaults: {
-    posts: [],
-    selectedPost: null,
+    posts: []
   },
 })
 @Injectable()
@@ -26,11 +24,6 @@ export class PostState {
     return state.posts;
   }
 
-  @Selector()
-  static getSelectedPost(state: PostStateModel): Post | null {
-    return state.selectedPost;
-  }
-
   @Action(GetPosts)
   getPosts(ctx: StateContext<PostStateModel>) {
     return this.postService.getPosts().pipe(
@@ -40,14 +33,6 @@ export class PostState {
     );
   }
 
-  @Action(GetPost)
-  getPost(ctx: StateContext<PostStateModel>, { id }: GetPost ) {
-    return this.postService.getPost(id).pipe(
-      tap((post) => {
-        ctx.patchState({ selectedPost: post });
-      })
-    );
-  }
 
   @Action(AddPost)
   addPost(ctx: StateContext<PostStateModel>, { payload }: AddPost) {

@@ -43,11 +43,7 @@ export class PostService {
     return this.makeRequest('GET', '');
   }
 
-  getPost(id: number): Observable<Post> {
-    return this.makeRequest('GET', id.toString());
-  }
-
-  addPost(post: Post): Observable<Post> {
+  addPost(post: Partial<Post>): Observable<Post> {
     return this.makeRequest('POST', '', post);
   }
 

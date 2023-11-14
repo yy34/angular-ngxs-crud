@@ -1,13 +1,44 @@
-<div class="container">
-  <h1>Post List</h1>
-  <div class="row">
-    <div class="post-list">
-      <div *ngFor="let post of posts$ | async; trackBy: trackById" class="post-item">
-        <span>{{post.id}}</span>
-        <h3 class="post-title">{{ post.title }}</h3>
-        <p class="post-body">{{ post.body }}</p>
-        <button class="post-delete" (click)="onDeletePost(post.id)">Delete</button>
-      </div>
-    </div>
-  </div>
+<div class="p-3 max-w-5xl mx-auto">
+  <app-post-form *ngIf="showPostForm" (closeModal)="closeForm()" [editingPost]="editingPost"></app-post-form>
+
+
+<div class="relative overflow-x-auto">
+  <h1 class="text-white">Post List</h1>
+  <button (click)="openPostForm()"  type="button" class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700">Add New Post</button>
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                  Post ID
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Title
+              </th>
+              <th scope="col" class="px-6 py-3">
+                  Body
+              </th>
+              <th scope="col" class="px-6 py-3">
+                 Action
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let post of posts$ | async; trackBy: trackById" class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                {{post.id}}
+              </th>
+              <td class="px-6 py-4 capitalize">
+                {{ post.title }}
+              </td>
+              <td class="px-6 py-4 capitalize">
+                {{ post.body }}
+              </td>
+              <td class="px-6 py-4 text-right flex gap-3">
+                  <span (click)="openPostForm(post)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Edit</span>
+                  <span (click)="onDeletePost(post.id)" class="font-medium text-blue-600 dark:text-blue-500 hover:underline cursor-pointer">Delete</span>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>
 </div>
